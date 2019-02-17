@@ -1,15 +1,19 @@
-import { autorun, observable } from "mobx"
+import { action, observable, decorate } from "mobx"
 
-class TodoStore {
-  @observable todo = ["buy milk", "buy eggs"]
-  @observable filter = ""
+
+class TodoStore{
+  todos = []
+  loading = false
+  addTodo = (newTask) => {
+    this.todos = [...this.todos, newTask]
+  }
+  todoCount = this.todos.length
 }
 
-var store = (window.store = new TodoStore())
+decorate(TodoStore, {
+  todos: observable,
+  loading: observable,
+  addTodo: action,
+} )
 
-export default store
-
-autorun(() => {
-  console.log(store.filter)
-  console.log(store.todo[0])
-})
+export default new TodoStore()
